@@ -1,0 +1,34 @@
+- name: copying mongo repo to yum.repos.d
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: copying catalogue js
+  ansible.builtin.copy:
+    src: catalogue.js
+    dest: /tmp/catalogue.js
+
+- name: Install mongodb
+  ansible.builtin.yum:
+    name: mongodb-org
+    state: installed
+
+- name: start and enable mongodb
+  ansible.builtin.service:
+    name: mongod
+    state: started
+    enabled: yes
+
+- name: enable remote connection to mongodb
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+      
+- name: to restart mongodb
+  ansible.builtin.service:
+    name: mongod
+    state: restarted
+
+- name: load catalogue data
+  ansible.builtin.command: mongo --host localhost < /tmp/catalogue.js

@@ -1,0 +1,21 @@
+- name: Disable Current MySQL version
+  ansible.builtin.command: yum module disable mysql -y 
+  
+- name: copy mysql repo into yum.repos.d
+  ansible.builtin.copy:
+    src: mysql.repo
+    dest: /etc/yum.repos.d/mysql.repo
+
+- name: Install MySQL server
+  ansible.builtin.yum:
+    name: mysql-community-server
+    state: installed
+
+- name: Start and Enable MySQL Service
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: setup root password
+  ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1

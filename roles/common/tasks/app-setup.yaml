@@ -1,0 +1,43 @@
+- name: check roboshop user exist or not
+  ansible.builtin.command: id roboshop
+  register: out #output is variable name
+  ignore_errors: true
+
+- when: out.rc != 0
+  name: create user roboshop
+  become: yes # we need sudo access for this task only
+  ansible.builtin.user:
+    name: roboshop
+
+- name: check /app directory exists or not
+  ansible.builtin.stat:
+    path: /app
+  register: directory
+
+- name: print the directory stats
+  ansible.builtin.debug:
+    msg: "output: {{directory}}"
+
+- when: directory.stat.exists == False
+  name: create /app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+# - name: "download {{component}} artifact"
+#   ansible.builtin.get_url:
+#     url: "https://roboshop-builds.s3.amazonaws.com/{{component}}.zip"
+#     dest: /tmp
+
+- name: download artifact from Nexus
+  ansible.builtin.get_url:
+    url: "{{nexus_url}}/{{component}}/{{group_id}}/{{component}}/{{app_version}}/{{component}}-{{app_version}}.zip"
+    dest: "/app/{{component}}-{{app_version}}.zip"
+    username: "{{nexus_username}}"
+    password: "{{nexus_password}}"
+
+- name: extract {{component}} artifact
+  ansible.builtin.unarchive:
+    src: "/app/{{component}}-{{app_version}}.zip"
+    dest: "/app"
+    remote_src: yes

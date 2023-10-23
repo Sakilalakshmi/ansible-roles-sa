@@ -1,0 +1,5 @@
+CATALOGUE_HOST: catalogue.learningdevops.shop
+USER_HOST: user.learningdevops.shop
+CART_HOST: cart.learningdevops.shop
+SHIPPING_HOST: shipping.learningdevops.shop
+PAYMENT_HOST: payment.learningdevops.shop

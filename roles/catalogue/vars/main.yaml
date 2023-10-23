@@ -1,0 +1,5 @@
+app_version: "1.0.6"
+nexus_url: http://172.31.37.116:8081/
+group_id: "com/roboshop"
+nexus_username: admin
+nexus_password: saki@123
