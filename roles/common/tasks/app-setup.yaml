@@ -29,15 +29,15 @@
 #     url: "https://roboshop-builds.s3.amazonaws.com/{{component}}.zip"
 #     dest: /tmp
 
-# - name: download artifact from Nexus
-#   ansible.builtin.get_url:
-#     url: "{{nexus_url}}/{{component}}/{{group_id}}/{{component}}/{{app_version}}/{{component}}-{{app_version}}.zip"
-#     dest: "/app/{{component}}-{{app_version}}.zip"
-#     username: "{{nexus_username}}"
-#     password: "{{nexus_password}}"
+- name: download artifact from Nexus
+  ansible.builtin.get_url:
+    url: "{{nexus_url}}/{{component}}/{{group_id}}/{{component}}/{{app_version}}/{{component}}-{{app_version}}.zip"
+    dest: "/app/{{component}}-{{app_version}}.zip"
+    username: "{{nexus_username}}"
+    password: "{{nexus_password}}"
 
-# - name: extract {{component}} artifact
-#   ansible.builtin.unarchive:
-#     src: "/app/{{component}}-{{app_version}}.zip"
-#     dest: "/app"
-#     remote_src: yes
+- name: extract {{component}} artifact
+  ansible.builtin.unarchive:
+    src: "/app/{{component}}-{{app_version}}.zip"
+    dest: "/app"
+    remote_src: yes
