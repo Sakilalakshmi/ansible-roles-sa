@@ -23,7 +23,7 @@
 #     name: common
 #     tasks_from: load-schema
 
-- name: setup application
+- name: setup system service
   ansible.builtin.import_role:
     name: common
     tasks_from: systemd-setup
